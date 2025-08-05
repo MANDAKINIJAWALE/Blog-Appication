@@ -8,16 +8,19 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import com.nit.bindingclasse.PostBindingClass;
 import com.nit.bindingclasse.UserBindingClass;
-import com.nit.entity.Comment;
 import com.nit.entity.Post;
 import com.nit.entity.User;
 import com.nit.repository.PostRepository;
 import com.nit.repository.UserRepository;
+
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -67,14 +70,23 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean login(String email, String password) {
 		
-		User user = userRepo.findByEmailAndPassword(email, password);
-		if(!ObjectUtils.isEmpty(user))
+		User user = userRepo.findByEmail(email);
+		
+		String password1=password+"salt";
+		System.out.println("salt+userenterlogin"+password1);
+		
+		PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+		
+		//we need to match the row password and encoded password from database
+		boolean b = passwordEncoder.matches(password1, user.getPassword());
+		
+		if(b)
 		{
-			//dashboard
-			
 			session.setAttribute("userId",user.getId());
 			return true;
 		}
+		
+	
 		
 		return false;
 	}
@@ -90,6 +102,15 @@ public class UserServiceImpl implements UserService {
 		if(ObjectUtils.isEmpty(byEmail))
 		{
 			User entity=new User();
+			
+			String passWithSalt=user.getPassword()+"salt";  //we added salt here
+			
+			
+			PasswordEncoder passEncoder=new BCryptPasswordEncoder(); //bcrypt will encrypt the password
+			String encodedPass = passEncoder.encode(passWithSalt);   //encoder will encode that encrypted password to transfer it safely without data lose
+			
+			
+			user.setPassword(encodedPass);
 			BeanUtils.copyProperties(user,entity);
 			User save=userRepo.save(entity);
 			if(save!=null)
