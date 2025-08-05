@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>login</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+	crossorigin="anonymous">
+
+<!-- Include CKEditor script in the <head> -->
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+<link rel="stylesheet" href="styling.css">
+
+</head>
+<body class="lightback">
+
+
+
+	<div class="container mt-3 p-5">
+
+		<div class="card  shadow bg-light">
+			<div class="card-header text-center">
+				<p class="fs-3">Edit Post</p>
+			</div>
+
+			<div class="card-body p-5">
+				<form th:action="@{/editPost}" method="post" th:object="${post}">
+				  
+				   <input type="hidden" th:field="*{id}" th:value=${post.id}>
+					<div class="mb-3">
+						<label for="title" class="form-label">Title</label> <input
+							type="text" id="title" th:field="*{title}"
+							placeholder="enter title" class="form-control" required>
+					</div>
+
+					<div class="mb-3">
+						<label for="disc" class="form-label">Short Description</label> <input
+							type="text" id="disc" th:field="*{shortDiscription}"
+							placeholder="enter short description" class="form-control"
+							required>
+					</div>
+					<!-- CKEditor -->
+					<div>
+						<label for="content" class="form-label">Content</label>
+						<textarea th:field="*{content}" id="content" class="form-control"
+							placeholder="enter post content" rows="6" required></textarea>
+					</div>
+
+					<div class="text-center mt-5 mb-3">
+						<button type="submit" class="btn btn-primary">Save Changes</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+		CKEDITOR.replace('content', {
+			enterMode : CKEDITOR.ENTER_BR,
+			shiftEnterMode : CKEDITOR.ENTER_P
+		});
+	</script>
+
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+		crossorigin="anonymous"></script>
+</body>
+</html>

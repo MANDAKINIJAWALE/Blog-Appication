@@ -1,0 +1,151 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.com">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>login</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+	crossorigin="anonymous">
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+	rel="stylesheet">
+
+<script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+	
+</script>
+
+<link rel="stylesheet" href="/CSS/styling.css">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous"
+  />
+</head>
+<body class="lightback">
+
+
+
+
+	<div id="ajaxuse">
+
+
+		<div class="container-fluid  p-5" >
+			<div class="card shadow">
+				<div class="card-body p-5">
+
+					<div class="text-end" th:if="${session.userId!=null}">
+						<a th:href="@{'/editPost?id='+${post.id}}"
+							class="btn btn-outline-primary " id="edit">Edit Post</a>&nbsp;&nbsp; <a
+							th:href="@{'/deletePost?id='+${post.id}}" class="btn btn-outline-danger">Delete
+							Post</a>
+					</div>
+
+					<div >
+						<!--fw font thickness  -->
+						<div class="text-center fw-bold card-title fs-1 text-primary">
+							<p th:utext="${post.title}"></p>
+						</div>
+					</div>
+
+					<div class="card-subtitle text-center fs-4 text-secondary mt-1" >
+						<p th:utext="${post.shortDiscription}"></p>
+					</div>
+
+					<div class="p-5">
+						<p th:utext="${post.content}"></p>
+					</div>
+
+					<div class="text-end text-muted small mt-4">
+						<i class="bi bi-calendar-event me-2"></i> Published on:
+						[[${post.updatedDate}]]
+					</div>
+
+
+
+				</div>
+
+			</div>
+
+		</div>
+
+	<hr>
+
+
+		<!--Comments  -->
+		<div class="container-fluid p-4 mt-4">
+		  <p class="fs-3 text-center fw-bold ">Comments</p>
+		    <div class=" col-md-6 offset-md-3">
+		      <div class="card-body text-secondary text-center fs-4">
+		         [[${msg}]] 
+		      </div>
+		     </div>
+			<div class="col-md-6 offset-md-3" th:each="com:${comments}">
+			   
+				<div class="  p-3">
+					<div class=" align-items-center mb-2">
+						<span class="fw-bold text-primary fs-5"><i class="fa-solid fa-circle-user"></i> [[${com.name}]]</span> <span
+							class="text-secondary small"> &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-circle small " style="font-size:5px;position:relative;top:-3px"></i> [[${com.commentAddedDate}]]</span>
+							
+							<a th:href="@{'/deleteComment?id='+${com.id} }"   onclick="return confirm('Are you shour you want to delete this comment?');" 
+							class="text-danger ps-5"><i class="fa-solid fa-trash-can  "></i></a>
+					</div>
+					<p class="fw-medium mb-0">[[${com.content}]]</p>
+				</div><hr>
+			</div>
+		</div>
+		
+		
+		
+
+	<div class="container-fluid mt-5 p-5" >
+			<div class="card  col-md-6 offset-md-3 p-3">
+				<div class="card-body">
+					<p class="card-title fs-3 text-center fw-bold"> Add Comment</p>
+					<form th:action="@{/saveComment}" th:object="${comment}"
+						method="post">
+						<div class="mb-3">
+							<label for="name" class="form-label">Name</label> <input
+								id="name" class="form-control" th:field="*{name}"
+								placeholder="enter name">
+						</div>
+
+						<div class="mb-3">
+							<label for="email" class="form-label">Email</label> <input
+								id="email" class="form-control" th:field="*{email}"
+								placeholder="enter email">
+						</div>
+
+						<div class="mb-3">
+							<label for="content" class="form-label">Comment</label> <input
+								id="content" class="form-control" th:field="*{content}"
+								placeholder="enter comment">
+						</div>
+
+						<div class="mb-3 text-center">
+							<button type="submit" class="btn btn-primary">Comment</button>
+						</div>
+
+					</form>
+
+				</div>
+
+			</div>
+
+		</div>
+
+
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+			crossorigin="anonymous"></script>
+
+	</div>
+</body>
+</html>
